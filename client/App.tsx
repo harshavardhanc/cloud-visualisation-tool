@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Resources from "./pages/Resources";
 import ResourceDetail from "./pages/ResourceDetail";
 import NotFound from "./pages/NotFound";
+import { DebugState } from "./components/DebugState";
 
 const queryClient = new QueryClient();
 
