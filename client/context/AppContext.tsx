@@ -198,7 +198,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("cloudviz-accounts");
       if (saved) {
         const accounts = JSON.parse(saved);
+        console.log("Loading accounts from storage:", accounts);
         dispatch({ type: "SET_ACCOUNTS", payload: accounts });
+      } else {
+        console.log("No accounts found in storage");
       }
     } catch (error) {
       console.error("Failed to load accounts from storage:", error);
@@ -210,7 +213,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("cloudviz-resources");
       if (saved) {
         const resources = JSON.parse(saved);
+        console.log("Loading resources from storage:", resources);
         dispatch({ type: "SET_RESOURCES", payload: resources });
+      } else {
+        console.log("No resources found in storage");
       }
     } catch (error) {
       console.error("Failed to load resources from storage:", error);
