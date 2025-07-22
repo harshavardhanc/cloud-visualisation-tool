@@ -31,12 +31,17 @@ If you encounter dependency resolution errors, try one of these solutions:
 
 #### Solution 1: Use Legacy Peer Deps (Recommended)
 
-The main Dockerfile has been updated to use `--legacy-peer-deps` to resolve conflicts:
+The main Dockerfile has been updated to use `--legacy-peer-deps` to resolve conflicts and fixed Node.js compatibility:
 
 ```bash
 # This should work out of the box
 docker-compose up --build
 ```
+
+**Recent Fixes:**
+- Fixed Node.js 18 compatibility in server build
+- Corrected path resolution for static files
+- Updated build configuration for proper file output
 
 #### Solution 2: Use Clean Dependencies Build
 
