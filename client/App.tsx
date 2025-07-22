@@ -6,7 +6,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { AppProvider, useApp } from "./context/AppContext";
+import Onboarding from "./pages/Onboarding";
+import EnhancedDashboard from "./pages/EnhancedDashboard";
 import Dashboard from "./pages/Dashboard";
 import Resources from "./pages/Resources";
 import ResourceDetail from "./pages/ResourceDetail";
@@ -14,21 +16,37 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
+function AppContent() {
+  const { state } = useApp();
+
+  return (
+    <Routes>
+      {!state.isOnboarded ? (
+        <Route path="*" element={<Onboarding />} />
+      ) : (
+        <>
+          <Route path="/" element={<EnhancedDashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/:id" element={<ResourceDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+        </>
+      )}
+    </Routes>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <AppProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </AppProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
