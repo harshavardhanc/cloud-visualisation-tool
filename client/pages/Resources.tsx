@@ -376,104 +376,72 @@ export default function Resources() {
           </Card>
         </div>
 
-        {/* Resources by Type */}
-        <div className="space-y-6">
-          {Object.keys(groupedResources).length === 0 ? (
-            <Card>
-              <CardContent className="text-center py-8 text-muted-foreground">
+        {/* Resources List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Resources</CardTitle>
+            <CardDescription>
+              Click on any resource to view detailed usage and cost information
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {filteredResources.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
                 <Server className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No resources found matching your filters.</p>
-              </CardContent>
-            </Card>
-          ) : (
-            Object.entries(groupedResources).map(([resourceType, resourcesOfType]) => {
-              const TypeIcon = resourceTypeIcons[resourceType as keyof typeof resourceTypeIcons] || Server;
-              const category = Object.entries(resourceTypeCategories).find(([_, types]) =>
-                types.includes(resourceType)
-              )?.[0] || 'Other';
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filteredResources.map((resource) => {
+                  const provider = providerInfo[resource.provider as keyof typeof providerInfo];
+                  const StatusIcon = statusIcons[resource.status as keyof typeof statusIcons];
+                  const TypeIcon = resourceTypeIcons[resource.type as keyof typeof resourceTypeIcons] || Server;
 
-              return (
-                <Card key={resourceType}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <TypeIcon className="h-6 w-6 text-primary" />
-                        <div>
-                          <CardTitle className="text-lg">{resourceType}</CardTitle>
-                          <CardDescription>
-                            {category} • {resourcesOfType.length} resource{resourcesOfType.length !== 1 ? 's' : ''}
-                          </CardDescription>
-                        </div>
-                      </div>
-                      <Badge variant="outline">
-                        ${resourcesOfType.reduce((acc, r) => acc + parseFloat(r.cost.replace(/[$,\/month]/g, '')), 0).toFixed(2)}/month
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {resourcesOfType.map((resource) => {
-                        const provider = providerInfo[resource.provider as keyof typeof providerInfo];
-                        const StatusIcon = statusIcons[resource.status as keyof typeof statusIcons];
-
-                        return (
-                          <Card key={resource.id} className="p-4 hover:shadow-md transition-shadow bg-muted/20">
-                            <div className="flex items-start justify-between">
-                              <div className="flex items-start space-x-3">
-                                <span className="text-lg">{provider.icon}</span>
-                                <div className="space-y-1 flex-1">
-                                  <h4 className="font-semibold">{resource.name}</h4>
-                                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                                    <Globe className="h-3 w-3" />
-                                    <span>{resource.region}</span>
-                                    <span>•</span>
-                                    <span>{resource.account}</span>
-                                  </div>
-                                  <div className="flex flex-wrap gap-1 mt-2">
-                                    {resource.tags.map((tag) => (
-                                      <Badge key={tag} variant="outline" className="text-xs">
-                                        {tag}
-                                      </Badge>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="text-right space-y-1">
-                                <Badge className={cn("text-xs", statusColors[resource.status as keyof typeof statusColors])}>
-                                  <StatusIcon className="h-3 w-3 mr-1" />
-                                  {resource.status}
-                                </Badge>
-                                <p className="text-sm font-semibold">{resource.cost}</p>
-                              </div>
+                  return (
+                    <Link key={resource.id} to={`/resources/${resource.id}`}>
+                      <Card className="p-4 hover:shadow-md transition-all cursor-pointer hover:bg-muted/50">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-2">
+                              <TypeIcon className="h-5 w-5 text-muted-foreground" />
+                              <span className="text-lg">{provider.icon}</span>
                             </div>
+                            <div>
+                              <h3 className="font-semibold">{resource.name}</h3>
+                              <p className="text-sm text-muted-foreground">{resource.type}</p>
+                            </div>
+                          </div>
 
-                            {(resource.status === 'running' || resource.status === 'active') && resource.cpu !== 'N/A' && (
-                              <div className="grid grid-cols-3 gap-3 mt-3 pt-3 border-t">
-                                <div className="text-center">
-                                  <p className="text-xs text-muted-foreground">CPU</p>
-                                  <p className="text-xs font-medium">{resource.cpu}</p>
-                                </div>
-                                <div className="text-center">
-                                  <p className="text-xs text-muted-foreground">Memory</p>
-                                  <p className="text-xs font-medium">{resource.memory}</p>
-                                </div>
-                                <div className="text-center">
-                                  <p className="text-xs text-muted-foreground">Network</p>
-                                  <p className="text-xs font-medium">{resource.network}</p>
-                                </div>
-                              </div>
-                            )}
-                          </Card>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })
-          )}
-        </div>
+                          <div className="flex items-center space-x-4">
+                            <div className="text-center">
+                              <p className="text-xs text-muted-foreground">Region</p>
+                              <p className="text-sm">{resource.region}</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-xs text-muted-foreground">Account</p>
+                              <p className="text-sm">{resource.account}</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-xs text-muted-foreground">Status</p>
+                              <Badge className={cn("text-xs", statusColors[resource.status as keyof typeof statusColors])}>
+                                <StatusIcon className="h-3 w-3 mr-1" />
+                                {resource.status}
+                              </Badge>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-xs text-muted-foreground">Cost</p>
+                              <p className="text-sm font-semibold">{resource.cost}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
