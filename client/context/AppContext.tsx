@@ -73,6 +73,7 @@ const initialState: AppState = {
   resources: [],
   isOnboarded: false,
   loading: false,
+  isInitialized: false,
   error: null,
   currentPage: "onboarding",
 };
