@@ -252,7 +252,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         dispatch({
           type: "SET_ERROR",
-          payload: "Failed to add account. Please check your credentials and try again.",
+          payload:
+            "Failed to add account. Please check your credentials and try again.",
         });
         throw error;
       } finally {
