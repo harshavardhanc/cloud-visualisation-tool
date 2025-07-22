@@ -1,43 +1,43 @@
-import React from 'react';
-import { useApp } from '@/context/AppContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React from "react";
+import { useApp } from "@/context/AppContext";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function DebugState() {
   const { state, actions } = useApp();
 
   const checkLocalStorage = () => {
-    const accounts = localStorage.getItem('cloudviz-accounts');
-    const resources = localStorage.getItem('cloudviz-resources');
-    console.log('LocalStorage accounts:', accounts);
-    console.log('LocalStorage resources:', resources);
-    console.log('State accounts:', state.accounts);
-    console.log('State resources:', state.resources);
-    console.log('Is onboarded:', state.isOnboarded);
-    console.log('Is initialized:', state.isInitialized);
+    const accounts = localStorage.getItem("cloudviz-accounts");
+    const resources = localStorage.getItem("cloudviz-resources");
+    console.log("LocalStorage accounts:", accounts);
+    console.log("LocalStorage resources:", resources);
+    console.log("State accounts:", state.accounts);
+    console.log("State resources:", state.resources);
+    console.log("Is onboarded:", state.isOnboarded);
+    console.log("Is initialized:", state.isInitialized);
   };
 
   const clearStorage = () => {
-    localStorage.removeItem('cloudviz-accounts');
-    localStorage.removeItem('cloudviz-resources');
+    localStorage.removeItem("cloudviz-accounts");
+    localStorage.removeItem("cloudviz-resources");
     window.location.reload();
   };
 
   const addTestAccount = async () => {
     try {
       await actions.addAccount({
-        name: 'Test AWS Account',
-        provider: 'aws',
-        region: 'us-east-1',
-        accessKey: 'test-key',
-        secretKey: 'test-secret',
-        status: 'connected',
-        lastSync: 'Just now',
+        name: "Test AWS Account",
+        provider: "aws",
+        region: "us-east-1",
+        accessKey: "test-key",
+        secretKey: "test-secret",
+        status: "connected",
+        lastSync: "Just now",
         resources: 0,
-        cost: '$0.00/month',
+        cost: "$0.00/month",
       });
     } catch (error) {
-      console.error('Failed to add test account:', error);
+      console.error("Failed to add test account:", error);
     }
   };
 

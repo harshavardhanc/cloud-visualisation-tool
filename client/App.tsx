@@ -32,7 +32,10 @@ function AppContent() {
     );
   }
 
-  console.log("App state:", { isOnboarded: state.isOnboarded, accountsCount: state.accounts.length });
+  console.log("App state:", {
+    isOnboarded: state.isOnboarded,
+    accountsCount: state.accounts.length,
+  });
 
   return (
     <>

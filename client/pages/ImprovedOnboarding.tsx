@@ -316,7 +316,7 @@ export default function ImprovedOnboarding() {
       // Auto-redirect to dashboard after success
       setTimeout(() => {
         // Force a reload to ensure the app recognizes the new state
-        window.location.href = '/';
+        window.location.href = "/";
       }, 3000);
     } catch (error) {
       console.error("Failed to add account:", error);
@@ -707,7 +707,7 @@ export default function ImprovedOnboarding() {
             </div>
 
             <Button
-              onClick={() => window.location.href = '/'}
+              onClick={() => (window.location.href = "/")}
               size="lg"
               className="px-8"
             >
