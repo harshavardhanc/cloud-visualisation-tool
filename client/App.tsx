@@ -35,20 +35,23 @@ function AppContent() {
   console.log("App state:", { isOnboarded: state.isOnboarded, accountsCount: state.accounts.length });
 
   return (
-    <Routes>
-      {!state.isOnboarded ? (
-        <Route path="*" element={<ImprovedOnboarding />} />
-      ) : (
-        <>
-          <Route path="/" element={<EnhancedDashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/resources/:id" element={<ResourceDetail />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </>
-      )}
-    </Routes>
+    <>
+      <Routes>
+        {!state.isOnboarded ? (
+          <Route path="*" element={<ImprovedOnboarding />} />
+        ) : (
+          <>
+            <Route path="/" element={<EnhancedDashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/:id" element={<ResourceDetail />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </>
+        )}
+      </Routes>
+      <DebugState />
+    </>
   );
 }
 
