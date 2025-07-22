@@ -141,7 +141,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, currentPage: action.payload };
 
     case "INIT_APP":
-      return { ...state, loading: false };
+      return { ...state, loading: false, isInitialized: true };
 
     default:
       return state;
