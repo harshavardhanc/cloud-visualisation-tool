@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, CheckCircle } from 'lucide-react';
+import { Loader2, CheckCircle, Shield, Globe, Search, Database, Download, Cpu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LoadingStep {
