@@ -39,6 +39,7 @@ docker-compose up --build
 ```
 
 **Recent Fixes:**
+
 - Fixed Node.js 18 compatibility in server build
 - Corrected path resolution for static files
 - Updated build configuration for proper file output
