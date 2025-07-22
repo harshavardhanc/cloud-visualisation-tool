@@ -47,6 +47,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        aws: {
+          DEFAULT: "#FF9900",
+          dark: "#EC7211",
+        },
+        azure: {
+          DEFAULT: "#0078D4",
+          dark: "#106EBE",
+        },
+        gcp: {
+          DEFAULT: "#4285F4",
+          dark: "#1A73E8",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
