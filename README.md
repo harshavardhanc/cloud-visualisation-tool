@@ -5,6 +5,7 @@ A modern web application for visualizing and managing cloud infrastructure acros
 ## 🚀 Running with Docker
 
 ### Prerequisites
+
 - Docker installed on your machine
 - Docker Compose (included with Docker Desktop)
 
@@ -136,6 +137,7 @@ environment:
 ### Production Deployment
 
 The application is production-ready and can be deployed to:
+
 - **VM/VPS**: Use the Docker setup
 - **Cloud platforms**: Deploy the container to AWS ECS, Azure Container Instances, or GCP Cloud Run
 - **Kubernetes**: Use the Docker image with your K8s manifests

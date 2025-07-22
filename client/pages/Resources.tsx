@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Cloud, 
-  Server, 
-  Database, 
-  Shield, 
-  Activity, 
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Cloud,
+  Server,
+  Database,
+  Shield,
+  Activity,
   Search,
   Filter,
   Settings,
@@ -22,102 +34,102 @@ import {
   Lock,
   AlertTriangle,
   CheckCircle,
-  Circle
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Circle,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const resources = [
   {
-    id: '1',
-    name: 'web-server-01',
-    type: 'EC2 Instance',
-    provider: 'aws',
-    account: 'Production AWS',
-    region: 'us-east-1',
-    status: 'running',
-    cpu: '85%',
-    memory: '67%',
-    network: '2.4 GB/s',
-    cost: '$47.20/month',
-    tags: ['production', 'web'],
+    id: "1",
+    name: "web-server-01",
+    type: "EC2 Instance",
+    provider: "aws",
+    account: "Production AWS",
+    region: "us-east-1",
+    status: "running",
+    cpu: "85%",
+    memory: "67%",
+    network: "2.4 GB/s",
+    cost: "$47.20/month",
+    tags: ["production", "web"],
   },
   {
-    id: '2',
-    name: 'database-cluster',
-    type: 'RDS Database',
-    provider: 'aws',
-    account: 'Production AWS',
-    region: 'us-east-1',
-    status: 'running',
-    cpu: '45%',
-    memory: '78%',
-    network: '1.2 GB/s',
-    cost: '$156.80/month',
-    tags: ['production', 'database'],
+    id: "2",
+    name: "database-cluster",
+    type: "RDS Database",
+    provider: "aws",
+    account: "Production AWS",
+    region: "us-east-1",
+    status: "running",
+    cpu: "45%",
+    memory: "78%",
+    network: "1.2 GB/s",
+    cost: "$156.80/month",
+    tags: ["production", "database"],
   },
   {
-    id: '3',
-    name: 'load-balancer-main',
-    type: 'Application Load Balancer',
-    provider: 'aws',
-    account: 'Production AWS',
-    region: 'us-east-1',
-    status: 'active',
-    cpu: 'N/A',
-    memory: 'N/A',
-    network: '5.6 GB/s',
-    cost: '$22.50/month',
-    tags: ['production', 'networking'],
+    id: "3",
+    name: "load-balancer-main",
+    type: "Application Load Balancer",
+    provider: "aws",
+    account: "Production AWS",
+    region: "us-east-1",
+    status: "active",
+    cpu: "N/A",
+    memory: "N/A",
+    network: "5.6 GB/s",
+    cost: "$22.50/month",
+    tags: ["production", "networking"],
   },
   {
-    id: '4',
-    name: 'storage-bucket-assets',
-    type: 'S3 Bucket',
-    provider: 'aws',
-    account: 'Production AWS',
-    region: 'us-east-1',
-    status: 'active',
-    cpu: 'N/A',
-    memory: 'N/A',
-    network: '890 MB/s',
-    cost: '$34.20/month',
-    tags: ['production', 'storage'],
+    id: "4",
+    name: "storage-bucket-assets",
+    type: "S3 Bucket",
+    provider: "aws",
+    account: "Production AWS",
+    region: "us-east-1",
+    status: "active",
+    cpu: "N/A",
+    memory: "N/A",
+    network: "890 MB/s",
+    cost: "$34.20/month",
+    tags: ["production", "storage"],
   },
   {
-    id: '5',
-    name: 'dev-vm-01',
-    type: 'Virtual Machine',
-    provider: 'azure',
-    account: 'Development Azure',
-    region: 'East US',
-    status: 'stopped',
-    cpu: '0%',
-    memory: '0%',
-    network: '0 MB/s',
-    cost: '$0.00/month',
-    tags: ['development', 'testing'],
+    id: "5",
+    name: "dev-vm-01",
+    type: "Virtual Machine",
+    provider: "azure",
+    account: "Development Azure",
+    region: "East US",
+    status: "stopped",
+    cpu: "0%",
+    memory: "0%",
+    network: "0 MB/s",
+    cost: "$0.00/month",
+    tags: ["development", "testing"],
   },
   {
-    id: '6',
-    name: 'analytics-cluster',
-    type: 'Kubernetes Cluster',
-    provider: 'gcp',
-    account: 'Main GCP Project',
-    region: 'us-central1',
-    status: 'running',
-    cpu: '62%',
-    memory: '54%',
-    network: '3.2 GB/s',
-    cost: '$89.40/month',
-    tags: ['analytics', 'kubernetes'],
+    id: "6",
+    name: "analytics-cluster",
+    type: "Kubernetes Cluster",
+    provider: "gcp",
+    account: "Main GCP Project",
+    region: "us-central1",
+    status: "running",
+    cpu: "62%",
+    memory: "54%",
+    network: "3.2 GB/s",
+    cost: "$89.40/month",
+    tags: ["analytics", "kubernetes"],
   },
 ];
 
 const statusColors = {
-  running: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  active: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  stopped: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
-  error: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+  running: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  active: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+  stopped: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200",
+  error: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
 };
 
 const statusIcons = {
@@ -128,61 +140,79 @@ const statusIcons = {
 };
 
 const providerInfo = {
-  aws: { name: 'AWS', icon: '🟠', color: 'text-orange-600' },
-  azure: { name: 'Azure', icon: '🔵', color: 'text-blue-600' },
-  gcp: { name: 'GCP', icon: '🔴', color: 'text-red-600' },
+  aws: { name: "AWS", icon: "🟠", color: "text-orange-600" },
+  azure: { name: "Azure", icon: "🔵", color: "text-blue-600" },
+  gcp: { name: "GCP", icon: "🔴", color: "text-red-600" },
 };
 
 const resourceTypeIcons = {
-  'EC2 Instance': Server,
-  'RDS Database': Database,
-  'Application Load Balancer': Network,
-  'S3 Bucket': HardDrive,
-  'Virtual Machine': Server,
-  'Kubernetes Cluster': Cpu,
+  "EC2 Instance": Server,
+  "RDS Database": Database,
+  "Application Load Balancer": Network,
+  "S3 Bucket": HardDrive,
+  "Virtual Machine": Server,
+  "Kubernetes Cluster": Cpu,
 };
 
 export default function Resources() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProvider, setSelectedProvider] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [selectedResourceType, setSelectedResourceType] = useState('all');
-  const [selectedRegion, setSelectedRegion] = useState('all');
-  const [selectedAccount, setSelectedAccount] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedProvider, setSelectedProvider] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedResourceType, setSelectedResourceType] = useState("all");
+  const [selectedRegion, setSelectedRegion] = useState("all");
+  const [selectedAccount, setSelectedAccount] = useState("all");
 
-  const filteredResources = resources.filter(resource => {
-    const matchesSearch = resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesProvider = selectedProvider === 'all' || resource.provider === selectedProvider;
-    const matchesStatus = selectedStatus === 'all' || resource.status === selectedStatus;
-    const matchesResourceType = selectedResourceType === 'all' || resource.type === selectedResourceType;
-    const matchesRegion = selectedRegion === 'all' || resource.region === selectedRegion;
-    const matchesAccount = selectedAccount === 'all' || resource.account === selectedAccount;
+  const filteredResources = resources.filter((resource) => {
+    const matchesSearch =
+      resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    const matchesProvider =
+      selectedProvider === "all" || resource.provider === selectedProvider;
+    const matchesStatus =
+      selectedStatus === "all" || resource.status === selectedStatus;
+    const matchesResourceType =
+      selectedResourceType === "all" || resource.type === selectedResourceType;
+    const matchesRegion =
+      selectedRegion === "all" || resource.region === selectedRegion;
+    const matchesAccount =
+      selectedAccount === "all" || resource.account === selectedAccount;
 
-    return matchesSearch && matchesProvider && matchesStatus && matchesResourceType && matchesRegion && matchesAccount;
+    return (
+      matchesSearch &&
+      matchesProvider &&
+      matchesStatus &&
+      matchesResourceType &&
+      matchesRegion &&
+      matchesAccount
+    );
   });
 
   // Group resources by type
-  const groupedResources = filteredResources.reduce((acc, resource) => {
-    if (!acc[resource.type]) {
-      acc[resource.type] = [];
-    }
-    acc[resource.type].push(resource);
-    return acc;
-  }, {} as Record<string, typeof resources>);
+  const groupedResources = filteredResources.reduce(
+    (acc, resource) => {
+      if (!acc[resource.type]) {
+        acc[resource.type] = [];
+      }
+      acc[resource.type].push(resource);
+      return acc;
+    },
+    {} as Record<string, typeof resources>,
+  );
 
   // Get unique values for filter options
-  const uniqueResourceTypes = [...new Set(resources.map(r => r.type))];
-  const uniqueRegions = [...new Set(resources.map(r => r.region))];
-  const uniqueAccounts = [...new Set(resources.map(r => r.account))];
-  const uniqueStatuses = [...new Set(resources.map(r => r.status))];
-  const uniqueProviders = [...new Set(resources.map(r => r.provider))];
+  const uniqueResourceTypes = [...new Set(resources.map((r) => r.type))];
+  const uniqueRegions = [...new Set(resources.map((r) => r.region))];
+  const uniqueAccounts = [...new Set(resources.map((r) => r.account))];
+  const uniqueStatuses = [...new Set(resources.map((r) => r.status))];
+  const uniqueProviders = [...new Set(resources.map((r) => r.provider))];
 
   const resourceTypeCategories = {
-    'Compute': ['EC2 Instance', 'Virtual Machine', 'Kubernetes Cluster'],
-    'Storage': ['S3 Bucket', 'RDS Database'],
-    'Networking': ['Application Load Balancer'],
+    Compute: ["EC2 Instance", "Virtual Machine", "Kubernetes Cluster"],
+    Storage: ["S3 Bucket", "RDS Database"],
+    Networking: ["Application Load Balancer"],
   };
 
   return (
@@ -198,9 +228,7 @@ export default function Resources() {
                   CloudViz
                 </h1>
               </Link>
-              <Badge variant="secondary">
-                Resource Explorer
-              </Badge>
+              <Badge variant="secondary">Resource Explorer</Badge>
             </div>
             <div className="flex items-center space-x-2">
               <Link to="/dashboard">
@@ -234,27 +262,36 @@ export default function Resources() {
                   className="pl-10"
                 />
               </div>
-              <Select value={selectedProvider} onValueChange={setSelectedProvider}>
+              <Select
+                value={selectedProvider}
+                onValueChange={setSelectedProvider}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Provider" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Providers</SelectItem>
-                  {uniqueProviders.map(provider => (
+                  {uniqueProviders.map((provider) => (
                     <SelectItem key={provider} value={provider}>
-                      {providerInfo[provider as keyof typeof providerInfo]?.name || provider}
+                      {providerInfo[provider as keyof typeof providerInfo]
+                        ?.name || provider}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={selectedResourceType} onValueChange={setSelectedResourceType}>
+              <Select
+                value={selectedResourceType}
+                onValueChange={setSelectedResourceType}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Resource Type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  {uniqueResourceTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  {uniqueResourceTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -264,7 +301,7 @@ export default function Resources() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Statuses</SelectItem>
-                  {uniqueStatuses.map(status => (
+                  {uniqueStatuses.map((status) => (
                     <SelectItem key={status} value={status}>
                       {status.charAt(0).toUpperCase() + status.slice(1)}
                     </SelectItem>
@@ -277,21 +314,28 @@ export default function Resources() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Regions</SelectItem>
-                  {uniqueRegions.map(region => (
-                    <SelectItem key={region} value={region}>{region}</SelectItem>
+                  {uniqueRegions.map((region) => (
+                    <SelectItem key={region} value={region}>
+                      {region}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <Select value={selectedAccount} onValueChange={setSelectedAccount}>
+              <Select
+                value={selectedAccount}
+                onValueChange={setSelectedAccount}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Account" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Accounts</SelectItem>
-                  {uniqueAccounts.map(account => (
-                    <SelectItem key={account} value={account}>{account}</SelectItem>
+                  {uniqueAccounts.map((account) => (
+                    <SelectItem key={account} value={account}>
+                      {account}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -300,12 +344,12 @@ export default function Resources() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    setSearchTerm('');
-                    setSelectedProvider('all');
-                    setSelectedStatus('all');
-                    setSelectedResourceType('all');
-                    setSelectedRegion('all');
-                    setSelectedAccount('all');
+                    setSearchTerm("");
+                    setSelectedProvider("all");
+                    setSelectedStatus("all");
+                    setSelectedResourceType("all");
+                    setSelectedRegion("all");
+                    setSelectedAccount("all");
                   }}
                 >
                   Clear Filters
@@ -322,11 +366,15 @@ export default function Resources() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Resources</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Resources
+              </CardTitle>
               <Server className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{filteredResources.length}</div>
+              <div className="text-2xl font-bold">
+                {filteredResources.length}
+              </div>
               <p className="text-xs text-muted-foreground">
                 of {resources.length} total
               </p>
@@ -339,25 +387,34 @@ export default function Resources() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {filteredResources.filter(r => r.status === 'running' || r.status === 'active').length}
+                {
+                  filteredResources.filter(
+                    (r) => r.status === "running" || r.status === "active",
+                  ).length
+                }
               </div>
-              <p className="text-xs text-muted-foreground">
-                Active resources
-              </p>
+              <p className="text-xs text-muted-foreground">Active resources</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Monthly Cost</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Monthly Cost
+              </CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${filteredResources.reduce((acc, r) => acc + parseFloat(r.cost.replace(/[$,\/month]/g, '')), 0).toFixed(2)}
+                $
+                {filteredResources
+                  .reduce(
+                    (acc, r) =>
+                      acc + parseFloat(r.cost.replace(/[$,\/month]/g, "")),
+                    0,
+                  )
+                  .toFixed(2)}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Per month
-              </p>
+              <p className="text-xs text-muted-foreground">Per month</p>
             </CardContent>
           </Card>
           <Card>
@@ -367,11 +424,9 @@ export default function Resources() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {new Set(filteredResources.map(r => r.provider)).size}
+                {new Set(filteredResources.map((r) => r.provider)).size}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Cloud providers
-              </p>
+              <p className="text-xs text-muted-foreground">Cloud providers</p>
             </CardContent>
           </Card>
         </div>
@@ -393,9 +448,16 @@ export default function Resources() {
             ) : (
               <div className="space-y-3">
                 {filteredResources.map((resource) => {
-                  const provider = providerInfo[resource.provider as keyof typeof providerInfo];
-                  const StatusIcon = statusIcons[resource.status as keyof typeof statusIcons];
-                  const TypeIcon = resourceTypeIcons[resource.type as keyof typeof resourceTypeIcons] || Server;
+                  const provider =
+                    providerInfo[
+                      resource.provider as keyof typeof providerInfo
+                    ];
+                  const StatusIcon =
+                    statusIcons[resource.status as keyof typeof statusIcons];
+                  const TypeIcon =
+                    resourceTypeIcons[
+                      resource.type as keyof typeof resourceTypeIcons
+                    ] || Server;
 
                   return (
                     <Link key={resource.id} to={`/resources/${resource.id}`}>
@@ -408,29 +470,48 @@ export default function Resources() {
                             </div>
                             <div>
                               <h3 className="font-semibold">{resource.name}</h3>
-                              <p className="text-sm text-muted-foreground">{resource.type}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {resource.type}
+                              </p>
                             </div>
                           </div>
 
                           <div className="flex items-center space-x-4">
                             <div className="text-center">
-                              <p className="text-xs text-muted-foreground">Region</p>
+                              <p className="text-xs text-muted-foreground">
+                                Region
+                              </p>
                               <p className="text-sm">{resource.region}</p>
                             </div>
                             <div className="text-center">
-                              <p className="text-xs text-muted-foreground">Account</p>
+                              <p className="text-xs text-muted-foreground">
+                                Account
+                              </p>
                               <p className="text-sm">{resource.account}</p>
                             </div>
                             <div className="text-center">
-                              <p className="text-xs text-muted-foreground">Status</p>
-                              <Badge className={cn("text-xs", statusColors[resource.status as keyof typeof statusColors])}>
+                              <p className="text-xs text-muted-foreground">
+                                Status
+                              </p>
+                              <Badge
+                                className={cn(
+                                  "text-xs",
+                                  statusColors[
+                                    resource.status as keyof typeof statusColors
+                                  ],
+                                )}
+                              >
                                 <StatusIcon className="h-3 w-3 mr-1" />
                                 {resource.status}
                               </Badge>
                             </div>
                             <div className="text-center">
-                              <p className="text-xs text-muted-foreground">Cost</p>
-                              <p className="text-sm font-semibold">{resource.cost}</p>
+                              <p className="text-xs text-muted-foreground">
+                                Cost
+                              </p>
+                              <p className="text-sm font-semibold">
+                                {resource.cost}
+                              </p>
                             </div>
                           </div>
                         </div>
