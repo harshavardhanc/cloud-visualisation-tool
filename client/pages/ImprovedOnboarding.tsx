@@ -311,11 +311,11 @@ export default function ImprovedOnboarding() {
       });
 
       setCurrentStep(4);
-      setIsAddAccountOpen(false);
 
-      // Auto-redirect to dashboard after success
+      // Auto-redirect to dashboard after success - no need to reload, the context will handle routing
       setTimeout(() => {
-        window.location.reload();
+        // The app state will automatically update and route to dashboard
+        // No manual reload needed since the context manages this
       }, 3000);
     } catch (error) {
       console.error("Failed to add account:", error);
