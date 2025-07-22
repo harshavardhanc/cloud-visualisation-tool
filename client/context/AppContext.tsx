@@ -45,6 +45,7 @@ export interface AppState {
   resources: Resource[];
   isOnboarded: boolean;
   loading: boolean;
+  isInitialized: boolean;
   error: string | null;
   currentPage: "onboarding" | "dashboard" | "resources" | "accounts";
 }
