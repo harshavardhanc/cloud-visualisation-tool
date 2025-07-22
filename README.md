@@ -25,6 +25,36 @@ docker-compose up -d --build
 3. **Access the application:**
    - Open your browser and go to `http://localhost:8080`
 
+### 🔧 Troubleshooting Docker Build Issues
+
+If you encounter dependency resolution errors, try one of these solutions:
+
+#### Solution 1: Use Legacy Peer Deps (Recommended)
+The main Dockerfile has been updated to use `--legacy-peer-deps` to resolve conflicts:
+
+```bash
+# This should work out of the box
+docker-compose up --build
+```
+
+#### Solution 2: Use Clean Dependencies Build
+If you still have issues, use the clean Dockerfile without unused 3D libraries:
+
+```bash
+# Build with clean dependencies
+docker build -f Dockerfile.clean -t cloudviz .
+docker run -p 8080:8080 cloudviz
+```
+
+#### Solution 3: Manual Build with Force
+If the above doesn't work, try:
+
+```bash
+# Build with --force flag
+docker build --build-arg INSTALL_CMD="npm install --force" -t cloudviz .
+docker run -p 8080:8080 cloudviz
+```
+
 ### Development Mode with Hot Reload
 
 For development with file watching and hot reload:
