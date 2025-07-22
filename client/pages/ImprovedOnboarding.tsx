@@ -313,10 +313,10 @@ export default function ImprovedOnboarding() {
 
       setCurrentStep(4);
 
-      // Auto-redirect to dashboard after success - no need to reload, the context will handle routing
+      // Auto-redirect to dashboard after success
       setTimeout(() => {
-        // The app state will automatically update and route to dashboard
-        // No manual reload needed since the context manages this
+        // Force a reload to ensure the app recognizes the new state
+        window.location.href = '/';
       }, 3000);
     } catch (error) {
       console.error("Failed to add account:", error);
