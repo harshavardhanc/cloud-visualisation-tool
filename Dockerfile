@@ -19,6 +19,11 @@ COPY . .
 # Build the application
 RUN npm run build
 
+# Verify the build output exists
+RUN ls -la dist/
+RUN ls -la dist/spa/ || echo "SPA build not found"
+RUN ls -la dist/server/ || echo "Server build not found"
+
 # Expose the port the app runs on
 EXPOSE 8080
 
