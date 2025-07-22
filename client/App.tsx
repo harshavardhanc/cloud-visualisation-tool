@@ -22,7 +22,7 @@ function AppContent() {
   return (
     <Routes>
       {!state.isOnboarded ? (
-        <Route path="*" element={<Onboarding />} />
+        <Route path="*" element={<ImprovedOnboarding />} />
       ) : (
         <>
           <Route path="/" element={<EnhancedDashboard />} />
