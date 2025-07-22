@@ -146,6 +146,9 @@ export default function Resources() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProvider, setSelectedProvider] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedResourceType, setSelectedResourceType] = useState('all');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [selectedAccount, setSelectedAccount] = useState('all');
 
   const filteredResources = resources.filter(resource => {
     const matchesSearch = resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -153,9 +156,34 @@ export default function Resources() {
                          resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesProvider = selectedProvider === 'all' || resource.provider === selectedProvider;
     const matchesStatus = selectedStatus === 'all' || resource.status === selectedStatus;
-    
-    return matchesSearch && matchesProvider && matchesStatus;
+    const matchesResourceType = selectedResourceType === 'all' || resource.type === selectedResourceType;
+    const matchesRegion = selectedRegion === 'all' || resource.region === selectedRegion;
+    const matchesAccount = selectedAccount === 'all' || resource.account === selectedAccount;
+
+    return matchesSearch && matchesProvider && matchesStatus && matchesResourceType && matchesRegion && matchesAccount;
   });
+
+  // Group resources by type
+  const groupedResources = filteredResources.reduce((acc, resource) => {
+    if (!acc[resource.type]) {
+      acc[resource.type] = [];
+    }
+    acc[resource.type].push(resource);
+    return acc;
+  }, {} as Record<string, typeof resources>);
+
+  // Get unique values for filter options
+  const uniqueResourceTypes = [...new Set(resources.map(r => r.type))];
+  const uniqueRegions = [...new Set(resources.map(r => r.region))];
+  const uniqueAccounts = [...new Set(resources.map(r => r.account))];
+  const uniqueStatuses = [...new Set(resources.map(r => r.status))];
+  const uniqueProviders = [...new Set(resources.map(r => r.provider))];
+
+  const resourceTypeCategories = {
+    'Compute': ['EC2 Instance', 'Virtual Machine', 'Kubernetes Cluster'],
+    'Storage': ['S3 Bucket', 'RDS Database'],
+    'Networking': ['Application Load Balancer'],
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -196,8 +224,8 @@ export default function Resources() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="relative md:col-span-2">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search resources..."
@@ -208,31 +236,84 @@ export default function Resources() {
               </div>
               <Select value={selectedProvider} onValueChange={setSelectedProvider}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All Providers" />
+                  <SelectValue placeholder="Provider" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Providers</SelectItem>
-                  <SelectItem value="aws">AWS</SelectItem>
-                  <SelectItem value="azure">Azure</SelectItem>
-                  <SelectItem value="gcp">GCP</SelectItem>
+                  {uniqueProviders.map(provider => (
+                    <SelectItem key={provider} value={provider}>
+                      {providerInfo[provider as keyof typeof providerInfo]?.name || provider}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={selectedResourceType} onValueChange={setSelectedResourceType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Resource Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  {uniqueResourceTypes.map(type => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All Statuses" />
+                  <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="running">Running</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="stopped">Stopped</SelectItem>
-                  <SelectItem value="error">Error</SelectItem>
+                  {uniqueStatuses.map(status => (
+                    <SelectItem key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline">
-                <Filter className="h-4 w-4 mr-2" />
-                More Filters
-              </Button>
+              <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Region" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Regions</SelectItem>
+                  {uniqueRegions.map(region => (
+                    <SelectItem key={region} value={region}>{region}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <Select value={selectedAccount} onValueChange={setSelectedAccount}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Account" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Accounts</SelectItem>
+                  {uniqueAccounts.map(account => (
+                    <SelectItem key={account} value={account}>{account}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedProvider('all');
+                    setSelectedStatus('all');
+                    setSelectedResourceType('all');
+                    setSelectedRegion('all');
+                    setSelectedAccount('all');
+                  }}
+                >
+                  Clear Filters
+                </Button>
+                <Badge variant="secondary" className="text-xs px-2 py-1">
+                  {filteredResources.length} of {resources.length} resources
+                </Badge>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -295,88 +376,104 @@ export default function Resources() {
           </Card>
         </div>
 
-        {/* Resources Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Resources</CardTitle>
-            <CardDescription>
-              Detailed view of your cloud infrastructure resources
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {filteredResources.map((resource) => {
-                const provider = providerInfo[resource.provider as keyof typeof providerInfo];
-                const StatusIcon = statusIcons[resource.status as keyof typeof statusIcons];
-                const TypeIcon = resourceTypeIcons[resource.type as keyof typeof resourceTypeIcons] || Server;
-
-                return (
-                  <Card key={resource.id} className="p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-4">
-                        <div className="flex items-center space-x-2">
-                          <TypeIcon className="h-6 w-6 text-muted-foreground" />
-                          <span className="text-xl">{provider.icon}</span>
-                        </div>
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-semibold">{resource.name}</h3>
-                          <p className="text-sm text-muted-foreground">{resource.type}</p>
-                          <div className="flex items-center space-x-4 text-sm">
-                            <span className="flex items-center space-x-1">
-                              <Globe className="h-3 w-3" />
-                              <span>{resource.region}</span>
-                            </span>
-                            <span>•</span>
-                            <span>{resource.account}</span>
-                          </div>
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {resource.tags.map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right space-y-2">
-                        <Badge className={cn("w-fit", statusColors[resource.status as keyof typeof statusColors])}>
-                          <StatusIcon className="h-3 w-3 mr-1" />
-                          {resource.status}
-                        </Badge>
-                        <p className="text-sm font-semibold">{resource.cost}</p>
-                      </div>
-                    </div>
-                    
-                    {resource.status === 'running' && (
-                      <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">CPU</p>
-                          <p className="text-sm font-semibold">{resource.cpu}</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">Memory</p>
-                          <p className="text-sm font-semibold">{resource.memory}</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">Network</p>
-                          <p className="text-sm font-semibold">{resource.network}</p>
-                        </div>
-                      </div>
-                    )}
-                  </Card>
-                );
-              })}
-            </div>
-            
-            {filteredResources.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
+        {/* Resources by Type */}
+        <div className="space-y-6">
+          {Object.keys(groupedResources).length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8 text-muted-foreground">
                 <Server className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No resources found matching your filters.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ) : (
+            Object.entries(groupedResources).map(([resourceType, resourcesOfType]) => {
+              const TypeIcon = resourceTypeIcons[resourceType as keyof typeof resourceTypeIcons] || Server;
+              const category = Object.entries(resourceTypeCategories).find(([_, types]) =>
+                types.includes(resourceType)
+              )?.[0] || 'Other';
+
+              return (
+                <Card key={resourceType}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <TypeIcon className="h-6 w-6 text-primary" />
+                        <div>
+                          <CardTitle className="text-lg">{resourceType}</CardTitle>
+                          <CardDescription>
+                            {category} • {resourcesOfType.length} resource{resourcesOfType.length !== 1 ? 's' : ''}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <Badge variant="outline">
+                        ${resourcesOfType.reduce((acc, r) => acc + parseFloat(r.cost.replace(/[$,\/month]/g, '')), 0).toFixed(2)}/month
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {resourcesOfType.map((resource) => {
+                        const provider = providerInfo[resource.provider as keyof typeof providerInfo];
+                        const StatusIcon = statusIcons[resource.status as keyof typeof statusIcons];
+
+                        return (
+                          <Card key={resource.id} className="p-4 hover:shadow-md transition-shadow bg-muted/20">
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start space-x-3">
+                                <span className="text-lg">{provider.icon}</span>
+                                <div className="space-y-1 flex-1">
+                                  <h4 className="font-semibold">{resource.name}</h4>
+                                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                                    <Globe className="h-3 w-3" />
+                                    <span>{resource.region}</span>
+                                    <span>•</span>
+                                    <span>{resource.account}</span>
+                                  </div>
+                                  <div className="flex flex-wrap gap-1 mt-2">
+                                    {resource.tags.map((tag) => (
+                                      <Badge key={tag} variant="outline" className="text-xs">
+                                        {tag}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="text-right space-y-1">
+                                <Badge className={cn("text-xs", statusColors[resource.status as keyof typeof statusColors])}>
+                                  <StatusIcon className="h-3 w-3 mr-1" />
+                                  {resource.status}
+                                </Badge>
+                                <p className="text-sm font-semibold">{resource.cost}</p>
+                              </div>
+                            </div>
+
+                            {(resource.status === 'running' || resource.status === 'active') && resource.cpu !== 'N/A' && (
+                              <div className="grid grid-cols-3 gap-3 mt-3 pt-3 border-t">
+                                <div className="text-center">
+                                  <p className="text-xs text-muted-foreground">CPU</p>
+                                  <p className="text-xs font-medium">{resource.cpu}</p>
+                                </div>
+                                <div className="text-center">
+                                  <p className="text-xs text-muted-foreground">Memory</p>
+                                  <p className="text-xs font-medium">{resource.memory}</p>
+                                </div>
+                                <div className="text-center">
+                                  <p className="text-xs text-muted-foreground">Network</p>
+                                  <p className="text-xs font-medium">{resource.network}</p>
+                                </div>
+                              </div>
+                            )}
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })
+          )}
+        </div>
       </main>
     </div>
   );
