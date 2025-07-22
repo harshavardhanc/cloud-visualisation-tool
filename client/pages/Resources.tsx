@@ -71,6 +71,8 @@ const resourceTypeIcons = {
 };
 
 export default function Resources() {
+  const { state } = useApp();
+  const resources = state.resources;
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
