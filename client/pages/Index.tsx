@@ -74,14 +74,18 @@ export default function Index() {
               </Badge>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
-              </Button>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Account
-              </Button>
+              <Link to="/dashboard">
+                <Button variant="outline" size="sm">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
+              <Link to="/dashboard">
+                <Button size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Account
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
