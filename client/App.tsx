@@ -19,6 +19,20 @@ const queryClient = new QueryClient();
 function AppContent() {
   const { state } = useApp();
 
+  // Show loading screen until app is initialized
+  if (!state.isInitialized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Loading CloudViz...</p>
+        </div>
+      </div>
+    );
+  }
+
+  console.log("App state:", { isOnboarded: state.isOnboarded, accountsCount: state.accounts.length });
+
   return (
     <Routes>
       {!state.isOnboarded ? (
