@@ -30,6 +30,7 @@ docker-compose up -d --build
 If you encounter dependency resolution errors, try one of these solutions:
 
 #### Solution 1: Use Legacy Peer Deps (Recommended)
+
 The main Dockerfile has been updated to use `--legacy-peer-deps` to resolve conflicts:
 
 ```bash
@@ -38,6 +39,7 @@ docker-compose up --build
 ```
 
 #### Solution 2: Use Clean Dependencies Build
+
 If you still have issues, use the clean Dockerfile without unused 3D libraries:
 
 ```bash
@@ -47,6 +49,7 @@ docker run -p 8080:8080 cloudviz
 ```
 
 #### Solution 3: Manual Build with Force
+
 If the above doesn't work, try:
 
 ```bash
