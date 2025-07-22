@@ -123,12 +123,12 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <Link to="/" className="flex items-center space-x-2">
                 <Cloud className="h-8 w-8 text-primary" />
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                   CloudViz
                 </h1>
-              </div>
+              </Link>
               <Badge variant="secondary">
                 Account Management
               </Badge>
