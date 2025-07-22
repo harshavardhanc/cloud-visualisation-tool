@@ -1,87 +1,160 @@
-import React, { useState } from 'react';
-import { useApp } from '@/context/AppContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Cloud, 
-  Plus, 
-  CheckCircle, 
-  ArrowRight, 
-  Server, 
-  Database, 
-  Shield, 
+import React, { useState } from "react";
+import { useApp } from "@/context/AppContext";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
+import {
+  Cloud,
+  Plus,
+  CheckCircle,
+  ArrowRight,
+  Server,
+  Database,
+  Shield,
   BarChart3,
   Zap,
   Globe,
   Eye,
   Settings,
-  Sparkles
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Sparkles,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const onboardingSteps = [
   {
     id: 1,
-    title: 'Welcome to CloudViz',
-    description: 'Your multi-cloud infrastructure visualization platform',
+    title: "Welcome to CloudViz",
+    description: "Your multi-cloud infrastructure visualization platform",
     icon: Sparkles,
   },
   {
     id: 2,
-    title: 'Connect Your First Account',
-    description: 'Add AWS, Azure, or GCP account to get started',
+    title: "Connect Your First Account",
+    description: "Add AWS, Azure, or GCP account to get started",
     icon: Plus,
   },
   {
     id: 3,
-    title: 'Explore Your Resources',
-    description: 'View and manage your cloud infrastructure',
+    title: "Explore Your Resources",
+    description: "View and manage your cloud infrastructure",
     icon: Eye,
   },
 ];
 
 const cloudProviders = [
   {
-    id: 'aws',
-    name: 'Amazon Web Services',
-    icon: '🟠',
-    description: 'Connect your AWS account to monitor EC2, RDS, S3, and more',
-    color: 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800',
+    id: "aws",
+    name: "Amazon Web Services",
+    icon: "🟠",
+    description: "Connect your AWS account to monitor EC2, RDS, S3, and more",
+    color:
+      "bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800",
     fields: [
-      { key: 'accessKey', label: 'Access Key ID', type: 'text', placeholder: 'AKIA...' },
-      { key: 'secretKey', label: 'Secret Access Key', type: 'password', placeholder: 'Your secret key' },
-      { key: 'region', label: 'Default Region', type: 'select', options: ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1'] },
+      {
+        key: "accessKey",
+        label: "Access Key ID",
+        type: "text",
+        placeholder: "AKIA...",
+      },
+      {
+        key: "secretKey",
+        label: "Secret Access Key",
+        type: "password",
+        placeholder: "Your secret key",
+      },
+      {
+        key: "region",
+        label: "Default Region",
+        type: "select",
+        options: ["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"],
+      },
     ],
   },
   {
-    id: 'azure',
-    name: 'Microsoft Azure',
-    icon: '🔵',
-    description: 'Connect your Azure subscription to monitor VMs, databases, and storage',
-    color: 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800',
+    id: "azure",
+    name: "Microsoft Azure",
+    icon: "🔵",
+    description:
+      "Connect your Azure subscription to monitor VMs, databases, and storage",
+    color:
+      "bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800",
     fields: [
-      { key: 'subscriptionId', label: 'Subscription ID', type: 'text', placeholder: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' },
-      { key: 'accessKey', label: 'Client ID', type: 'text', placeholder: 'Your client ID' },
-      { key: 'secretKey', label: 'Client Secret', type: 'password', placeholder: 'Your client secret' },
-      { key: 'region', label: 'Default Region', type: 'select', options: ['East US', 'West Europe', 'Southeast Asia', 'Central India'] },
+      {
+        key: "subscriptionId",
+        label: "Subscription ID",
+        type: "text",
+        placeholder: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      },
+      {
+        key: "accessKey",
+        label: "Client ID",
+        type: "text",
+        placeholder: "Your client ID",
+      },
+      {
+        key: "secretKey",
+        label: "Client Secret",
+        type: "password",
+        placeholder: "Your client secret",
+      },
+      {
+        key: "region",
+        label: "Default Region",
+        type: "select",
+        options: ["East US", "West Europe", "Southeast Asia", "Central India"],
+      },
     ],
   },
   {
-    id: 'gcp',
-    name: 'Google Cloud Platform',
-    icon: '🔴',
-    description: 'Connect your GCP project to monitor Compute Engine, Cloud SQL, and storage',
-    color: 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800',
+    id: "gcp",
+    name: "Google Cloud Platform",
+    icon: "🔴",
+    description:
+      "Connect your GCP project to monitor Compute Engine, Cloud SQL, and storage",
+    color: "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800",
     fields: [
-      { key: 'projectId', label: 'Project ID', type: 'text', placeholder: 'my-project-id' },
-      { key: 'accessKey', label: 'Service Account Key', type: 'textarea', placeholder: 'Paste your service account JSON key...' },
-      { key: 'region', label: 'Default Region', type: 'select', options: ['us-central1', 'us-east1', 'europe-west1', 'asia-southeast1'] },
+      {
+        key: "projectId",
+        label: "Project ID",
+        type: "text",
+        placeholder: "my-project-id",
+      },
+      {
+        key: "accessKey",
+        label: "Service Account Key",
+        type: "textarea",
+        placeholder: "Paste your service account JSON key...",
+      },
+      {
+        key: "region",
+        label: "Default Region",
+        type: "select",
+        options: ["us-central1", "us-east1", "europe-west1", "asia-southeast1"],
+      },
     ],
   },
 ];
@@ -89,23 +162,23 @@ const cloudProviders = [
 const features = [
   {
     icon: Server,
-    title: 'Resource Monitoring',
-    description: 'Track all your cloud resources in one place',
+    title: "Resource Monitoring",
+    description: "Track all your cloud resources in one place",
   },
   {
     icon: BarChart3,
-    title: 'Cost Analysis',
-    description: 'Monitor and optimize your cloud spending',
+    title: "Cost Analysis",
+    description: "Monitor and optimize your cloud spending",
   },
   {
     icon: Shield,
-    title: 'Security Insights',
-    description: 'Get security recommendations and alerts',
+    title: "Security Insights",
+    description: "Get security recommendations and alerts",
   },
   {
     icon: Zap,
-    title: 'Performance Metrics',
-    description: 'Real-time performance monitoring',
+    title: "Performance Metrics",
+    description: "Real-time performance monitoring",
   },
 ];
 
@@ -113,7 +186,7 @@ export default function Onboarding() {
   const { state, actions } = useApp();
   const [currentStep, setCurrentStep] = useState(1);
   const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<string>('');
+  const [selectedProvider, setSelectedProvider] = useState<string>("");
   const [accountForm, setAccountForm] = useState<Record<string, string>>({});
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -134,7 +207,7 @@ export default function Onboarding() {
   };
 
   const handleFormChange = (key: string, value: string) => {
-    setAccountForm(prev => ({ ...prev, [key]: value }));
+    setAccountForm((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleConnectAccount = async () => {
@@ -142,31 +215,36 @@ export default function Onboarding() {
 
     setIsConnecting(true);
     try {
-      const provider = cloudProviders.find(p => p.id === selectedProvider);
+      const provider = cloudProviders.find((p) => p.id === selectedProvider);
       await actions.addAccount({
         name: `${provider?.name} Account`,
         provider: selectedProvider as any,
-        region: accountForm.region || provider?.fields.find(f => f.key === 'region')?.options?.[0] || '',
-        accessKey: accountForm.accessKey || '',
+        region:
+          accountForm.region ||
+          provider?.fields.find((f) => f.key === "region")?.options?.[0] ||
+          "",
+        accessKey: accountForm.accessKey || "",
         secretKey: accountForm.secretKey,
         subscriptionId: accountForm.subscriptionId,
         projectId: accountForm.projectId,
-        status: 'connecting',
-        lastSync: 'Connecting...',
+        status: "connecting",
+        lastSync: "Connecting...",
         resources: 0,
-        cost: '$0.00/month',
+        cost: "$0.00/month",
       });
 
       setIsAddAccountOpen(false);
       setCurrentStep(3);
     } catch (error) {
-      console.error('Failed to add account:', error);
+      console.error("Failed to add account:", error);
     } finally {
       setIsConnecting(false);
     }
   };
 
-  const selectedProviderData = cloudProviders.find(p => p.id === selectedProvider);
+  const selectedProviderData = cloudProviders.find(
+    (p) => p.id === selectedProvider,
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -193,14 +271,16 @@ export default function Onboarding() {
           <div className="flex items-center justify-between mb-4">
             {onboardingSteps.map((step, index) => (
               <div key={step.id} className="flex items-center">
-                <div className={cn(
-                  "flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all",
-                  currentStep > step.id
-                    ? "bg-primary border-primary text-primary-foreground"
-                    : currentStep === step.id
-                    ? "border-primary text-primary"
-                    : "border-muted text-muted-foreground"
-                )}>
+                <div
+                  className={cn(
+                    "flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all",
+                    currentStep > step.id
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : currentStep === step.id
+                        ? "border-primary text-primary"
+                        : "border-muted text-muted-foreground",
+                  )}
+                >
                   {currentStep > step.id ? (
                     <CheckCircle className="h-5 w-5" />
                   ) : (
@@ -208,15 +288,20 @@ export default function Onboarding() {
                   )}
                 </div>
                 {index < onboardingSteps.length - 1 && (
-                  <div className={cn(
-                    "w-24 h-0.5 mx-4 transition-all",
-                    currentStep > step.id ? "bg-primary" : "bg-muted"
-                  )} />
+                  <div
+                    className={cn(
+                      "w-24 h-0.5 mx-4 transition-all",
+                      currentStep > step.id ? "bg-primary" : "bg-muted",
+                    )}
+                  />
                 )}
               </div>
             ))}
           </div>
-          <Progress value={(currentStep / onboardingSteps.length) * 100} className="h-2" />
+          <Progress
+            value={(currentStep / onboardingSteps.length) * 100}
+            className="h-2"
+          />
         </div>
 
         {/* Step Content */}
@@ -225,7 +310,9 @@ export default function Onboarding() {
             <div className="space-y-4">
               <h2 className="text-4xl font-bold">Welcome to CloudViz</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                The ultimate multi-cloud infrastructure visualization platform. Monitor, analyze, and optimize your AWS, Azure, and GCP resources from a single dashboard.
+                The ultimate multi-cloud infrastructure visualization platform.
+                Monitor, analyze, and optimize your AWS, Azure, and GCP
+                resources from a single dashboard.
               </p>
             </div>
 
@@ -235,7 +322,9 @@ export default function Onboarding() {
                   <CardContent className="pt-6">
                     <feature.icon className="h-12 w-12 mx-auto mb-4 text-primary" />
                     <h3 className="font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -253,18 +342,19 @@ export default function Onboarding() {
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-bold">Connect Your First Account</h2>
               <p className="text-lg text-muted-foreground">
-                Choose your cloud provider to start monitoring your infrastructure
+                Choose your cloud provider to start monitoring your
+                infrastructure
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {cloudProviders.map((provider) => (
-                <Card 
+                <Card
                   key={provider.id}
                   className={cn(
                     "cursor-pointer transition-all hover:shadow-lg",
                     provider.color,
-                    selectedProvider === provider.id && "ring-2 ring-primary"
+                    selectedProvider === provider.id && "ring-2 ring-primary",
                   )}
                   onClick={() => handleProviderSelect(provider.id)}
                 >
@@ -272,7 +362,9 @@ export default function Onboarding() {
                     <div className="flex items-center space-x-3">
                       <span className="text-3xl">{provider.icon}</span>
                       <div>
-                        <CardTitle className="text-lg">{provider.name}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {provider.name}
+                        </CardTitle>
                       </div>
                     </div>
                   </CardHeader>
@@ -297,9 +389,12 @@ export default function Onboarding() {
         {currentStep === 3 && (
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold">🎉 Account Connected Successfully!</h2>
+              <h2 className="text-3xl font-bold">
+                🎉 Account Connected Successfully!
+              </h2>
               <p className="text-lg text-muted-foreground">
-                Your cloud account has been connected. CloudViz is now scanning your resources.
+                Your cloud account has been connected. CloudViz is now scanning
+                your resources.
               </p>
             </div>
 
@@ -309,15 +404,23 @@ export default function Onboarding() {
                   <CheckCircle className="h-8 w-8 text-green-500" />
                   <div>
                     <h3 className="font-semibold">Connection Established</h3>
-                    <p className="text-sm text-muted-foreground">Resources are being discovered...</p>
+                    <p className="text-sm text-muted-foreground">
+                      Resources are being discovered...
+                    </p>
                   </div>
                 </div>
                 <Progress value={85} className="mb-4" />
-                <p className="text-xs text-muted-foreground">This may take a few moments</p>
+                <p className="text-xs text-muted-foreground">
+                  This may take a few moments
+                </p>
               </CardContent>
             </Card>
 
-            <Button onClick={() => window.location.reload()} size="lg" className="px-8">
+            <Button
+              onClick={() => window.location.reload()}
+              size="lg"
+              className="px-8"
+            >
               <BarChart3 className="h-4 w-4 mr-2" />
               View Dashboard
             </Button>
@@ -334,28 +437,35 @@ export default function Onboarding() {
               <span>Connect {selectedProviderData?.name}</span>
             </DialogTitle>
             <DialogDescription>
-              Enter your credentials to connect your {selectedProviderData?.name} account
+              Enter your credentials to connect your{" "}
+              {selectedProviderData?.name} account
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div>
               <Label htmlFor="accountName">Account Name</Label>
               <Input
                 id="accountName"
                 placeholder={`My ${selectedProviderData?.name} Account`}
-                value={accountForm.name || ''}
-                onChange={(e) => handleFormChange('name', e.target.value)}
+                value={accountForm.name || ""}
+                onChange={(e) => handleFormChange("name", e.target.value)}
               />
             </div>
 
             {selectedProviderData?.fields.map((field) => (
               <div key={field.key}>
                 <Label htmlFor={field.key}>{field.label}</Label>
-                {field.type === 'select' ? (
-                  <Select onValueChange={(value) => handleFormChange(field.key, value)}>
+                {field.type === "select" ? (
+                  <Select
+                    onValueChange={(value) =>
+                      handleFormChange(field.key, value)
+                    }
+                  >
                     <SelectTrigger>
-                      <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
+                      <SelectValue
+                        placeholder={`Select ${field.label.toLowerCase()}`}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {field.options?.map((option) => (
@@ -365,21 +475,25 @@ export default function Onboarding() {
                       ))}
                     </SelectContent>
                   </Select>
-                ) : field.type === 'textarea' ? (
+                ) : field.type === "textarea" ? (
                   <textarea
                     id={field.key}
                     className="w-full p-2 border rounded-md resize-none h-24 text-sm"
                     placeholder={field.placeholder}
-                    value={accountForm[field.key] || ''}
-                    onChange={(e) => handleFormChange(field.key, e.target.value)}
+                    value={accountForm[field.key] || ""}
+                    onChange={(e) =>
+                      handleFormChange(field.key, e.target.value)
+                    }
                   />
                 ) : (
                   <Input
                     id={field.key}
                     type={field.type}
                     placeholder={field.placeholder}
-                    value={accountForm[field.key] || ''}
-                    onChange={(e) => handleFormChange(field.key, e.target.value)}
+                    value={accountForm[field.key] || ""}
+                    onChange={(e) =>
+                      handleFormChange(field.key, e.target.value)
+                    }
                   />
                 )}
               </div>
@@ -387,7 +501,10 @@ export default function Onboarding() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddAccountOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddAccountOpen(false)}
+            >
               Cancel
             </Button>
             <Button onClick={handleConnectAccount} disabled={isConnecting}>
@@ -397,7 +514,7 @@ export default function Onboarding() {
                   Connecting...
                 </>
               ) : (
-                'Connect Account'
+                "Connect Account"
               )}
             </Button>
           </DialogFooter>

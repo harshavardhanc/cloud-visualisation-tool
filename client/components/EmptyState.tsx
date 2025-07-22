@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Cloud, Plus, ArrowRight } from 'lucide-react';
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Cloud, Plus, ArrowRight } from "lucide-react";
 
 interface EmptyStateProps {
   title: string;
@@ -13,7 +13,12 @@ interface EmptyStateProps {
   icon?: React.ElementType;
 }
 
-export function EmptyState({ title, description, action, icon: Icon = Cloud }: EmptyStateProps) {
+export function EmptyState({
+  title,
+  description,
+  action,
+  icon: Icon = Cloud,
+}: EmptyStateProps) {
   return (
     <div className="flex items-center justify-center min-h-[400px]">
       <Card className="max-w-md text-center">
