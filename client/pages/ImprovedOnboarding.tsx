@@ -707,7 +707,7 @@ export default function ImprovedOnboarding() {
             </div>
 
             <Button
-              onClick={() => window.location.reload()}
+              onClick={() => window.location.href = '/'}
               size="lg"
               className="px-8"
             >
