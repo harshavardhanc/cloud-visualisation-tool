@@ -263,10 +263,12 @@ export default function Dashboard() {
                   </div>
 
                   <div className="flex justify-between items-center pt-2 border-t">
-                    <Button variant="outline" size="sm">
-                      <Activity className="h-4 w-4 mr-2" />
-                      View Resources
-                    </Button>
+                    <Link to="/resources">
+                      <Button variant="outline" size="sm">
+                        <Activity className="h-4 w-4 mr-2" />
+                        View Resources
+                      </Button>
+                    </Link>
                     <Button variant="outline" size="sm">
                       <Key className="h-4 w-4 mr-2" />
                       Sync Now
