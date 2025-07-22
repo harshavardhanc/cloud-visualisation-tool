@@ -94,16 +94,16 @@ export function LoadingState({
 
 // Preset loading configurations
 export const ConnectionLoadingSteps = [
-  { label: 'Validating credentials', progress: 20, icon: require('lucide-react').Shield },
-  { label: 'Establishing connection', progress: 40, icon: require('lucide-react').Globe },
-  { label: 'Discovering resources', progress: 60, icon: require('lucide-react').Search },
-  { label: 'Organizing data', progress: 80, icon: require('lucide-react').Database },
-  { label: 'Finalizing setup', progress: 100, icon: require('lucide-react').CheckCircle },
+  { label: 'Validating credentials', progress: 20, icon: Shield },
+  { label: 'Establishing connection', progress: 40, icon: Globe },
+  { label: 'Discovering resources', progress: 60, icon: Search },
+  { label: 'Organizing data', progress: 80, icon: Database },
+  { label: 'Finalizing setup', progress: 100, icon: CheckCircle },
 ];
 
 export const SyncLoadingSteps = [
-  { label: 'Connecting to cloud provider', progress: 25, icon: require('lucide-react').Globe },
-  { label: 'Fetching resource updates', progress: 50, icon: require('lucide-react').Download },
-  { label: 'Processing changes', progress: 75, icon: require('lucide-react').Cpu },
-  { label: 'Updating dashboard', progress: 100, icon: require('lucide-react').CheckCircle },
+  { label: 'Connecting to cloud provider', progress: 25, icon: Globe },
+  { label: 'Fetching resource updates', progress: 50, icon: Download },
+  { label: 'Processing changes', progress: 75, icon: Cpu },
+  { label: 'Updating dashboard', progress: 100, icon: CheckCircle },
 ];
