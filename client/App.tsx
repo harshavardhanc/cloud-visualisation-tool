@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider, useApp } from "./context/AppContext";
-import Onboarding from "./pages/Onboarding";
+import ImprovedOnboarding from "./pages/ImprovedOnboarding";
 import EnhancedDashboard from "./pages/EnhancedDashboard";
 import Dashboard from "./pages/Dashboard";
 import Resources from "./pages/Resources";
