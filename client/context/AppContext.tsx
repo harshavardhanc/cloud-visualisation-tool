@@ -178,19 +178,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Save to localStorage whenever accounts change
   useEffect(() => {
-    if (state.accounts.length > 0) {
-      localStorage.setItem("cloudviz-accounts", JSON.stringify(state.accounts));
-    }
+    console.log("Saving accounts to storage:", state.accounts);
+    localStorage.setItem("cloudviz-accounts", JSON.stringify(state.accounts));
   }, [state.accounts]);
 
   // Save to localStorage whenever resources change
   useEffect(() => {
-    if (state.resources.length > 0) {
-      localStorage.setItem(
-        "cloudviz-resources",
-        JSON.stringify(state.resources),
-      );
-    }
+    console.log("Saving resources to storage:", state.resources);
+    localStorage.setItem("cloudviz-resources", JSON.stringify(state.resources));
   }, [state.resources]);
 
   const loadAccountsFromStorage = () => {
