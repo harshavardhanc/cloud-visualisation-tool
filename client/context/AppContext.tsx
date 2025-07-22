@@ -221,8 +221,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addAccount: async (accountData: Omit<CloudAccount, "id" | "createdAt">) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Simulate realistic connection process - this would be actual API calls in production
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        const resourceCount = Math.floor(Math.random() * 50) + 15;
+        const monthlyCost = (Math.random() * 800 + 100).toFixed(2);
 
         const newAccount: CloudAccount = {
           ...accountData,
@@ -230,21 +233,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
           createdAt: new Date().toISOString(),
           status: "connected",
           lastSync: "Just now",
-          resources: Math.floor(Math.random() * 100) + 10,
-          cost: `$${(Math.random() * 500 + 50).toFixed(2)}/month`,
+          resources: resourceCount,
+          cost: `$${monthlyCost}/month`,
         };
 
         dispatch({ type: "ADD_ACCOUNT", payload: newAccount });
 
-        // Generate some mock resources for the new account
+        // Generate realistic mock resources for the new account
         const mockResources = generateMockResources(newAccount);
         mockResources.forEach((resource) => {
           dispatch({ type: "ADD_RESOURCE", payload: resource });
         });
 
         dispatch({ type: "SET_ERROR", payload: null });
+
+        // Return the account for confirmation
+        return newAccount;
       } catch (error) {
-        dispatch({ type: "SET_ERROR", payload: "Failed to add account" });
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Failed to add account. Please check your credentials and try again.",
+        });
         throw error;
       } finally {
         dispatch({ type: "SET_LOADING", payload: false });
