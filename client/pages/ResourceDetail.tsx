@@ -289,8 +289,9 @@ const resourceTypeIcons = {
 };
 
 export default function ResourceDetail() {
+  const { state } = useApp();
   const { id } = useParams();
-  const resource = resources.find((r) => r.id === id);
+  const resource = state.resources.find((r) => r.id === id);
 
   if (!resource) {
     return (
